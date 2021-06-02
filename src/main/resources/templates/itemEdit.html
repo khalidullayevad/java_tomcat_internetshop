@@ -1,0 +1,161 @@
+<html xmlns:th = "http://www.thymeleaf.org"
+      xmlns:layout = "http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/admin.html">
+
+    <div layout:fragment="list_of_table" >
+            <form th:action="@{'/editShopItem'}" method="post">
+                <input type="hidden" th:value="${item.id}" name="id">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabl">
+                        <span th:text="#{button.edit}"></span>
+                    </h5>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroup-sizing-defaul 1"> <span th:text="#{label.nameShopItem}"></span></span>
+                        </div>
+                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name="shop_name" th:value="${item.name}">
+                    </div>
+                    <div class="form-group">
+                        <label><span th:text="#{label.descShopItem}"></span></label>
+                        <textarea class="form-control" name="shop_description" th:text="${item.description}"></textarea>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroup-sizing-default2"><span th:text="#{label.priceShopItem}"></span></span>
+                        </div>
+                        <input type="number" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" th:value="${item.price}" name="shop_price">
+                    </div>
+                    <div class="form-group">
+                        <label ><span th:text="#{label.starShopItem}"></span></label>
+                        <select class="form-control" id="taskcomplete" name="shop_star">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroup-sizing-default4"><span th:text="#{label.pictureSmallURLItem}"></span></span>
+                        </div>
+                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" th:value="${item.smallPicURL}" name="small_shop_picture">
+                    </div>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroup-sizing-default5"><span th:text="#{label.pictureLargeURLItem}"></span></span>
+                        </div>
+                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" th:value="${item.largePicURL}" name="large_shop_picture">
+                    </div>
+                    <div class="form-group">
+                        <label ><span th:text="#{label.top}"></span></label>
+                        <select class="form-control" id="task" name="isTop">
+                            <option value="true"><span th:text="#{label.yes}"></span></option>
+                            <option value="false"><span th:text="#{label.no}"></span></option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label ><span th:text="#{label.brands}"></span></label>
+                        <select class="form-control" id="brand" name="brand_id">
+                            <option th:each ="br: ${brands}" th:text="${br.name} + '/'+${br.country.name}" th:value="${br.id}" th:selected="${item!= null && item.brands!=null && item.brands.id==br.id}"></option>
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button  class="btn btn-primary"><span th:text="#{button.edit}"></span></button>
+                    </div>
+                </div>
+            </form>
+        <table class="table table-striped">
+            <tbody>
+            <tr th:each="cat:${item.categories}">
+                <form th:action="@{'/disassign'}" method="post">
+                    <input type="hidden" th:value="${item.id}" name="item_id">
+                    <input type="hidden"  th:value="${cat.id}" name="category_id">
+                    <td th:text="${cat.name}"></td>
+                    <td width="10%">
+                        <button class="btn btn-danger">-</button>
+                    </td>
+                </form>
+            </tr>
+            <tr th:each="cat:${categories}">
+                <form th:action="@{'/assign'}" method="post">
+                    <input type="hidden" th:value="${item.id}" name="item_id">
+                    <input type="hidden"  th:value="${cat.id}" name="category_id">
+                    <td th:text="${cat.name}"></td>
+                    <td width="10%">
+                        <button class="btn btn-success">+</button>
+                    </td>
+                </form>
+            </tr>
+            </tbody>
+        </table>
+
+
+        <h3>Pictures</h3>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th th:text="#{label.pictures}">
+
+                </th>
+                <th>URL</th>
+                <th th:text="#{label.addedDate}"></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="it:${pictures}">
+                <form th:action="@{'/minusAssignPicture'}" method="post">
+                    <input type="hidden" name="picture_id" th:value="${it.id}">
+                    <input type="hidden" name="item_id" th:value="${item.getId()}">
+                    <td><img th:src="@{'/viewPicture/'+${it.url}}" alt="" style="width: 50px;" class="img-thumbnail"></td>
+                    <td th:text="${it.url}"></td>
+                    <td th:text="${it.addedDate}"></td>
+                    <td width="10%">
+                        <button class="btn btn-danger">-</button>
+                    </td>
+                </form>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td style="width: 10%">
+                    <button  data-toggle="modal" data-target="#plusModal"
+                            class="btn btn-success"> +
+                    </button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+
+        <form th:action="@{'/addPicture'}" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="item_id" th:value="${item.getId()}">
+            <div class="modal fade" id="plusModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="customFile" name="url">
+                                <label class="custom-file-label" for="customFile"  th:text="#{button.chooseFile}" ></label>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" th:text="#{button.cancel}"></button>
+                            <button type="submit" class="btn btn-success" th:text="#{button.uploadFile}" ></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</html>

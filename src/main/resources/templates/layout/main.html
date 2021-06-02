@@ -1,0 +1,83 @@
+<html xmlns:th = "http://www.thymeleaf.org"
+      xmlns:layout = "http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec = "http://www.thymeleaf.org/extras/spring-security"
+>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{'https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css'}" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://kit.fontawesome.com/b8d631eee1.js" crossorigin="anonymous"></script>
+    <script th:src="@{'https://code.jquery.com/jquery-3.5.1.slim.min.js'}" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script th:src="@{'https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js'}" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script th:src="@{'https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js'}" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+
+    <title>Shops</title>
+</head>
+<body>
+<div class="container-fluid" th:insert="~{layout/navbar}">
+</div>
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-3 ">
+            <ul class="list-group">
+                <li class="list-group-item" style="background-color:  #1F6F44; color: white" ><span th:text="#{label.category}"></span></li>
+                <li class="list-group-item"><a th:href="@{'/allItems'}">
+                    <span th:text="#{label.allItems}" style="color: black"></span>
+                    <i class="fas fa-shopping-basket" style="color: black"></i></a></li>
+                <li class="list-group-item"><a href="/?type=laptop" style="color: black">
+                    <span th:text="#{label.Laptops}" style="color: black"></span>
+                    <i class="fas fa-laptop"></i></a></li>
+                <li class="list-group-item"><a href="/?type=phone" style="color: black">
+                    <span th:text="#{label.phones}"></span>
+                    <i class="fas fa-mobile"></i></a></li>
+                <li class="list-group-item"><a href="/?type=watch" style="color: black">
+                    <span th:text="#{label.watches}"></span>
+                    <i class="fas fa-clock"></i></a></li>
+                <li class="list-group-item"><a href="/?type=tv" style="color: black">
+                    <span th:text="#{label.TV}"></span>
+                    <i class="fas fa-tv"></i></a></li>
+                <li class="list-group-item"><a href="/?type=console" style="color: black">
+                    <span th:text="#{label.game}"></span>
+                    <i class="fab fa-xbox"></i></a></li>
+                <li class="list-group-item"><a href="/?type=all" style="color: black">
+                    <span th:text="#{label.others}"></span>
+                    <i class="fas fa-folder-plus"></i></a></li>
+            </ul>
+
+            <ul class="list-group" style="padding-top: 40px;">
+
+                    <li class="list-group-item" style="background-color:  #1F6F44; color: white"><span th:text="#{label.brands}"></span></li>
+                <div th:each="sh:${brands}">
+                <li class="list-group-item" >
+
+                    <a  th:href="@{'/searchByBrand/'+${sh.id}}" th:text="${sh.name}" th:value="${sh.id}" name="id"></a>
+
+                </li>
+                </div>
+                <li class="list-group-item"><i class="fas fa-folder-plus" aria-hidden="true"></i> <span th:text="#{label.others}"></span></li>
+
+            </ul>
+            <ul class="list-group" style="padding-top: 40px; color: white">
+                <b>
+                    <li class="list-group-item" style="background-color: #1F6F44;"><span th:text="#{label.payments}"></span></li>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-sm-4"><i class="fa fa-paypal fa-3x" aria-hidden="true" style="color: midnightblue"></i></div>
+                            <div class="col-sm-4"><i class="fa fa-cc-visa fa-3x" aria-hidden="true" style="color: midnightblue"></i></div>
+                            <div class="col-sm-4"><i class="fa fa-cc-mastercard fa-3x" aria-hidden="true" style="color: midnightblue"></i></i></div>
+                            <div class="col-sm-4"><i class="fa fa-amazon fa-3x" aria-hidden="true" style="color: midnightblue"></i></i></div>
+                            <div class="col-sm-4"><i class="fa fa-google-wallet fa-3x" aria-hidden="true" style="color: midnightblue"></i></i></div>
+                            <div class="col-sm-4"><i class="fa fa-cc-stripe fa-3x" aria-hidden="true" style="color: midnightblue"></i></i></div>
+                        </div>
+                    </div>
+                </b>
+            </ul>
+        </div>
+        <div class="col-9"  layout:fragment="list_of_shops">
+        </div>
+    </div>
+    </div>
+</div>
+
+</body>
+</html>

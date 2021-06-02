@@ -1,0 +1,144 @@
+<html xmlns:th = "http://www.thymeleaf.org"
+      xmlns:layout = "http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/admin.html">
+
+<div layout:fragment="list_of_table" >
+    <button type="button" class="btn btn-info mt-4 mb-4" data-toggle="modal" data-target="#addModal" >
+        <span th:text="#{button.add}"></span>
+    </button>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col" th:text="#{label.nameShopItem}"></th>
+            <th scope="col" th:text="#{label.priceShopItem}"></th>
+            <th scope="col" th:text="#{label.brands}"></th>
+            <th scope="col" th:text="#{label.countries}"></th>
+            <th scope="col"><span th:text="#{button.edit}"></span></th>
+            <th scope="col"><span th:text="#{button.delete}"></span></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="sh:${shops}">
+            <th scope="row" th:text="${sh.id}"></th>
+            <td th:text="${sh.name}"></td>
+            <td th:text="${sh.price}"></td>
+            <td th:text="${sh.brands.name}"></td>
+            <td th:text="${sh.brands.country.name}"></td>
+            <td>
+                <a th:href="@{'/editDetail/'+ ${sh.id}}" class="btn btn-info" th:text="#{button.edit}"></a>
+            </td>
+            <td>
+            <button type="button" class="btn btn-danger" data-toggle="modal" th:attr="data-target='#deleteModal'+${sh.getId()}">
+                <span th:text="#{button.delete}"></span>
+            </button></td>
+
+
+            <!--    MODAL DELETE-->
+
+            <div class="modal fade" th:id="'deleteModal'+${sh.getId()}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabe"><span th:text="#{label.delete}"></span></h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal"><span th:text="#{button.cancel}"></span></button>
+                            <form th:action="@{'/delete/'+ ${sh.id}}" method="post">
+                                <input type="hidden" name="task_id" th:value="${sh.id}">
+                                <button  class="btn btn-danger"><span th:text="#{button.delete}"></span></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--    END OF MODAL-->
+
+
+
+
+        </tr>
+        </tbody>
+    </table>
+
+
+    <!--   Modal-->
+    <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form th:action="@{'/addShopItem'}" method="post">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">
+                            <span th:text="#{label.addItem}"></span> </h5>
+                        <button class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-default 1"> <span th:text="#{label.nameShopItem}"></span></span>
+                            </div>
+                            <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name="shop_name">
+                        </div>
+                        <div class="form-group">
+                            <label><span th:text="#{label.descShopItem}"></span></label>
+                            <textarea class="form-control" name="shop_description"></textarea>
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-default 2"><span th:text="#{label.priceShopItem}"></span></span>
+                            </div>
+                            <input type="number" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name="shop_price">
+                        </div>
+                        <div class="form-group">
+                            <label for="task_complete"><span th:text="#{label.starShopItem}"></span></label>
+                            <select class="form-control" id="task_complete" name="shop_star">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-default 4"><span th:text="#{label.pictureSmallURLItem}"></span></span>
+                            </div>
+                            <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name="small_shop_picture">
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-default 5"><span th:text="#{label.pictureLargeURLItem}"></span></span>
+                            </div>
+                            <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name="large_shop_picture">
+                        </div>
+                        <div class="form-group">
+                            <label for="task_complete"><span th:text="#{label.top}"></span></label>
+                            <select class="form-control" id="task_compl" name="isTop">
+                                <option value="true"><span th:text="#{label.yes}"></span></option>
+                                <option value="false"><span th:text="#{label.no}"></span></option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="task_complete"><span th:text="#{label.brands}"></span></label>
+                            <select class="form-control" id="brands" name="brand_id">
+                               <option th:each ="br: ${brands}" th:text="${br.name} + '/'+${br.country.name}" th:value="${br.id}"></option>
+                            </select>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal"><span th:text="#{button.cancel}"></span></button>
+                            <button  class="btn btn-primary"><span th:text="#{button.add}"></span></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!--   End of modal-->
+
+</div>
+</html>

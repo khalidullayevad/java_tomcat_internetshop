@@ -1,0 +1,48 @@
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #1F6F44;" xmlns:th = "http://www.thymeleaf.org"  xmlns:sec = "http://www.thymeleaf.org/extras/spring-security">
+    <a class="navbar-brand" th:href="@{'/'}" style="color: white; font-weight: bolder">ALL E-SHOP</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{'/admin'}" sec:authorize="hasAnyRole('ROLE_ADMIN','ROLE_MODERATOR')"  style="font-weight: bold; text-transform: uppercase; color:white;" ><span th:text="#{label.adminpanel}"></span></a>
+            </li>
+        </ul>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item dropdown">
+                <div class="dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="color: white;" >
+                        <span th:text="#{label.language}"></span>
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown" style="color:white;">
+                        <a class="dropdown-item" href="?lng=eng">EN</a>
+                        <a class="dropdown-item" href="?lng=ru">RU</a>
+                        <!--                            <div class="dropdown-divider"></div>-->
+                        <a class="dropdown-item" href="?lng=kz">KZ</a>
+                    </div>
+                </div>
+            </li>
+            <li class="nav-item" sec:authorize="isAuthenticated()">
+                <a class="nav-link" th:href="@{'/profile'}" style="font-weight: bold; text-transform: uppercase; color:white;" ><span th:text="${currentUser.fullName}"></span></a>
+            </li>
+            <li class="nav-item" sec:authorize="isAnonymous()">
+                <a style="text-decoration: none; color: white" class="nav-link" th:href="@{'/basket'}" th:text="#{label.basket} + '(' + ${session.basketItems.size()} + ')' " th:unless="${session.basketItems == null}"></a>
+            </li>
+            <li class="nav-item" sec:authorize="isAuthenticated()">
+                <a style="text-decoration: none; color: white" class="nav-link" th:href="@{'/basket'}" th:text="#{label.basket} + '(' + ${session.basketItems.size()} + ')' " th:unless="${session.basketItems == null}"></a>
+            </li>
+            <li class="nav-item" sec:authorize="isAnonymous()">
+                <a class="nav-link" th:href="@{'/login'}" style="font-weight: bold; text-transform: uppercase; color:white;" ><span th:text="#{label.login}"></span></a>
+            </li>
+
+            <li class="nav-item" sec:authorize="isAuthenticated()">
+                <a class="nav-link" href="JavaScript:void(0)" onclick="document.getElementById('logoutFormId').submit()" th:text="#{label.lagout}" style="font-weight: bold; text-transform: uppercase; color:white;" ></a>
+            </li>
+            <form th:action="@{'/logout'}" method="post" id="logoutFormId" sec:authorize="isAuthenticated()">
+            </form>
+        </ul>
+    </div>
+</nav>

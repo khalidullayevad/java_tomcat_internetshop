@@ -1,0 +1,120 @@
+<html xmlns:th = "http://www.thymeleaf.org"
+      xmlns:layout = "http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/admin.html"
+      xmlns:sec = "http://www.thymeleaf.org/extras/spring-security"
+>
+
+<div layout:fragment="list_of_table" >
+    <button sec:authorize="hasRole('ROLE_ADMIN')"  type="button" class="btn btn-info mt-4 mb-4" data-toggle="modal" data-target="#addModal" >
+        <span th:text="#{button.add}"></span>
+    </button>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col" th:text="#{label.email}"></th>
+            <th scope="col"th:text="#{label.fullName}"></th>
+            <th scope="col" th:text="#{label.role}"></th>
+
+            <th sec:authorize="hasRole('ROLE_ADMIN')" scope="col"><span th:text="#{button.edit}"></span></th>
+            <th sec:authorize="hasRole('ROLE_ADMIN')" scope="col"><span th:text="#{button.delete}"></span></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="sh:${users}">
+            <th scope="row" th:text="${sh.id}"></th>
+            <td th:text="${sh.email}"></td>
+            <td th:text="${sh.fullName}"></td>
+            <td ><p th:each="r:${sh.roles}"><span th:text="${r.name}"></span></p> </td>
+
+            <td sec:authorize="hasRole('ROLE_ADMIN')" >
+                <a th:href="@{'/editUser/'+ ${sh.id}}" class="btn btn-info"><span th:text="#{button.edit}"></span></a>
+            </td>
+            <td sec:authorize="hasRole('ROLE_ADMIN')">
+                <button type="button" class="btn btn-danger" data-toggle="modal" th:attr="data-target='#deleteModal'+${sh.getId()}">
+                    <span th:text="#{button.delete}"></span>
+                </button></td>
+
+
+            <!--    MODAL DELETE-->
+
+            <div class="modal fade" th:id="'deleteModal'+${sh.getId()}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabe"><span th:text="#{label.delete}"></span></h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal"><span th:text="#{button.cancel}"></span></button>
+                            <form th:action="@{'/deleteUser/'+ ${sh.id}}" method="post">
+                                <input type="hidden" name="task_id" th:value="${sh.id}">
+                                <button  class="btn btn-danger"><span th:text="#{button.delete}"></span></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--    END OF MODAL-->
+
+
+
+
+        </tr>
+        </tbody>
+    </table>
+
+
+    <!--   Modal-->
+    <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form th:action="@{'/addUser'}" method="post">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">
+                            </h5>
+                        <button class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-default 1" th:text="#{label.fullName}"></span>
+                            </div>
+                            <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name="full_name">
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-default" th:text="#{label.email}"></span>
+                            </div>
+                            <input type="email" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name="email">
+                        </div>
+
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-default 2" th:text="#{label.password}"></span>
+                            </div>
+                            <input type="password" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name="password">
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGoup-sizing-default 2" th:text="#{label.repass}"></span>
+                            </div>
+                            <input type="password" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name="re-password">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal"><span th:text="#{button.cancel}"></span></button>
+                            <button  class="btn btn-primary"><span th:text="#{button.add}"></span></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!--   End of modal-->
+
+</div>
+</html>

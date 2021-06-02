@@ -1,0 +1,138 @@
+<html xmlns:th = "http://www.thymeleaf.org"
+      xmlns:layout = "http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/admin.html"
+      xmlns:sec = "http://www.thymeleaf.org/extras/spring-security"
+>
+
+<div layout:fragment="list_of_table" >
+    <button type="button" class="btn btn-info mt-4 mb-4" sec:authorize="hasRole('ROLE_ADMIN')" data-toggle="modal" data-target="#addModal" >
+        <span th:text="#{button.add}"></span>
+    </button>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col"><span th:text="#{label.nameShopItem}"></span></th>
+            <th scope="col">Logo Url</th>
+            <th scope="col" sec:authorize="hasRole('ROLE_ADMIN')"><span th:text="#{button.edit}"></span></th>
+            <th scope="col" sec:authorize="hasRole('ROLE_ADMIN')"><span th:text="#{button.delete}"></span></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="sh:${categories}">
+            <th scope="row" th:text="${sh.id}"></th>
+            <td th:text="${sh.name}"></td>
+            <td th:text="${sh.logoURL}"></td>
+            <td sec:authorize="hasRole('ROLE_ADMIN')"><button th:attr="data-target='#editModal'+${sh.getId()}" sec:authorize="hasRole('ROLE_ADMIN')" type="button" class="btn btn-success" data-toggle="modal" >
+                <span th:text="#{button.edit}"></span>
+            </button>
+            </td>
+            <td sec:authorize="hasRole('ROLE_ADMIN')"> <button type="button" class="btn btn-danger" data-toggle="modal" sec:authorize="hasRole('ROLE_ADMIN')" th:attr="data-target='#deleteModal'+${sh.getId()}">
+                <span th:text="#{button.delete}"></span>
+            </button></td>
+
+
+            <!--    MODAL DELETE-->
+
+            <div class="modal fade" th:id="'deleteModal'+${sh.getId()}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabe"><span th:text="#{label.delete}"></span></h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal"><span th:text="#{button.cancel}"></span></button>
+                            <form th:action="@{'/deleteCategory/'+ ${sh.id}}" method="post">
+                                <input type="hidden" name="id" th:value="${sh.id}">
+                                <button  class="btn btn-danger"><span th:text="#{button.delete}"></span></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--    END OF MODAL-->
+
+
+
+            <!--   Modal EDIT-->
+            <div class="modal fade" th:id="'editModal'+${sh.getId()}"  tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form th:action="@{'/editCategory'}" method="post">
+                            <input type="hidden" th:value="${sh.id}" name="category_id">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabl">
+                                    <span th:text="#{button.edit}"></span> </h5>
+                                <button class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="inputGroup-sizing-defaul 1"> <span th:text="#{label.nameShopItem}"></span></span>
+                                    </div>
+                                    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name="category_name" th:value="${sh.name}">
+                                </div>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="inputGroup-sizing-defau 1"> <span th:text="#{label.nameShopItem}"></span></span>
+                                    </div>
+                                    <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name="logoUrl" th:value="${sh.logoURL}">
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal"><span th:text="#{button.cancel}"></span></button>
+                                    <button  class="btn btn-primary"><span th:text="#{button.edit}"></span></button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!--   End of modal-->
+        </tr>
+        </tbody>
+    </table>
+
+
+    <!--   Modal-->
+    <div class="modal fade" id="addModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form th:action="@{'/addCategory'}" method="post">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">
+                            <span th:text="#{label.addItem}"></span> </h5>
+                        <button class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-default 1"> <span th:text="#{label.nameShopItem}"></span></span>
+                            </div>
+                            <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name="category_name">
+                        </div>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroup-sizing-deault 1">Logo Url</span>
+                            </div>
+                            <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name="logoUrl">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal"><span th:text="#{button.cancel}"></span></button>
+                            <button  class="btn btn-primary"><span th:text="#{button.add}"></span></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!--   End of modal-->
+</div>
+</html>

@@ -1,0 +1,64 @@
+<html xmlns:th = "http://www.thymeleaf.org"
+      xmlns:layout = "http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/admin.html"
+      xmlns:sec = "http://www.thymeleaf.org/extras/spring-security"
+>
+
+<div layout:fragment="list_of_table" >
+    <table class="table table-hover mt-4">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col" th:text="#{label.comment}"></th>
+            <th scope="col" th:text="#{label.addedDate}"></th>
+            <th scope="col" th:text="#{label.fullName}"></th>
+            <th scope="col" th:text="#{label.items}"></th>
+            <th  scope="col"><span th:text="#{button.delete}"></span></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="sh:${comments}">
+            <th scope="row" th:text="${sh.id}"></th>
+            <td th:text="${sh.comment}"></td>
+            <td th:text="${sh.addedDate}"></td>
+            <td th:text="${sh.author.fullName}"></td>
+            <td th:text="${sh.items.name}"></td>
+            <td sec:authorize="hasRole('ROLE_ADMIN')"> <button type="button" class="btn btn-danger" data-toggle="modal" sec:authorize="hasRole('ROLE_ADMIN')" th:attr="data-target='#deleteModal'+${sh.getId()}">
+                <span th:text="#{button.delete}"></span>
+            </button></td>
+
+
+            <!--    MODAL DELETE-->
+
+            <div class="modal fade" th:id="'deleteModal'+${sh.getId()}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabe"><span th:text="#{label.delete}"></span></h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal"><span th:text="#{button.cancel}"></span></button>
+                            <form th:action="@{'/deleteCommentAdmin/'+ ${sh.id}}" method="post">
+                                <input type="hidden" name="id" th:value="${sh.id}">
+                                <button  class="btn btn-danger"><span th:text="#{button.delete}"></span></button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--    END OF MODAL-->
+
+
+
+
+        </tr>
+        </tbody>
+    </table>
+
+
+
+</div>
+</html>

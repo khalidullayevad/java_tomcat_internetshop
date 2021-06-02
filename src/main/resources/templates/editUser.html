@@ -1,0 +1,65 @@
+<html xmlns:th = "http://www.thymeleaf.org"
+      xmlns:layout = "http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/admin.html">
+
+<div layout:fragment="list_of_table" >
+    <form th:action="@{'/editUserDetail'}" method="post">
+        <input type="hidden" th:value="${user.id}" name="id">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabl">
+                <span th:text="#{button.edit}"></span>
+            </h5>
+        </div>
+        <div class="modal-body">
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-defaul 1"> <span th:text="#{label.nameShopItem}"></span></span>
+                </div>
+                <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name="full_name" th:value="${user.fullName}">
+            </div>
+
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <label>Email:  </label>
+                </div>
+                <span th:text="${user.email}" ></span>
+            </div>
+
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-default4"><span >Password</span></span>
+                </div>
+                <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name="password">
+            </div>
+
+            <div class="modal-footer">
+                <button  class="btn btn-primary"><span th:text="#{button.edit}"></span></button>
+            </div>
+        </div>
+    </form>
+    <table class="table table-striped">
+        <tbody>
+        <tr th:each="cat:${user.roles}">
+            <form th:action="@{'/diroling'}" method="post">
+                <input type="hidden" th:value="${user.id}" name="user_id">
+                <input type="hidden"  th:value="${cat.id}" name="role_id">
+                <td th:text="${cat.name}"></td>
+                <td width="10%">
+                    <button class="btn btn-danger">-</button>
+                </td>
+            </form>
+        </tr>
+        <tr th:each="cat:${roles}">
+            <form th:action="@{'/roling'}" method="post">
+                <input type="hidden" th:value="${user.id}" name="user_id">
+                <input type="hidden"  th:value="${cat.id}" name="role_id">
+                <td th:text="${cat.name}"></td>
+                <td width="10%">
+                    <button class="btn btn-success">+</button>
+                </td>
+            </form>
+        </tr>
+        </tbody>
+    </table>
+
+</div>
+</html>

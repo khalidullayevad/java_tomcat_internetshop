@@ -1,0 +1,42 @@
+<html xmlns:th = "http://www.thymeleaf.org"
+      xmlns:layout = "http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+
+    <link rel="stylesheet" th:href="@{'https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css'}" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://kit.fontawesome.com/b8d631eee1.js" crossorigin="anonymous"></script>
+    <script th:src="@{'https://code.jquery.com/jquery-3.5.1.slim.min.js'}" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script th:src="@{'https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js'}" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script th:src="@{'https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js'}" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+
+    <title>Shops</title>
+</head>
+<body>
+<div class="container-fluid" th:insert="~{layout/navbar}">
+</div>
+<div class="container mt-3">
+    <div class="row">
+        <div class="col-3 ">
+            <ul class="list-group" style="padding-top: 40px;">
+                <li class="list-group-item" style="background-color:  #1F6F44; color: white"><span th:text="#{label.adminpanel}"></span></li>
+                <li class="list-group-item"><a th:href="@{'/admin'}"><span th:text="#{label.items}"></span></a></li>
+                <li class="list-group-item"><a th:href="@{'/admin/country'}"><span th:text="#{label.countries}"></span></a></li>
+                <li class="list-group-item"><a th:href="@{'/admin/brands'}"><span th:text="#{label.brands}"></span></a></li>
+                <li class="list-group-item"><a th:href="@{'/admin/categories'}"><span th:text="#{label.category}"></span></a></li>
+                <li class="list-group-item"><a th:href="@{'/admin/roles'}"><span th:text="#{label.role}"></span></a></li>
+                <li class="list-group-item"><a th:href="@{'/admin/users'}"><span th:text="#{label.user}"></span></a></li>
+                <li class="list-group-item"><a th:href="@{'/admin/comments'}"><span th:text="#{label.comment}"></span></a></li>
+                <li class="list-group-item"><a th:href="@{'/admin/orders'}"><span th:text="#{label.order}"></span></a></li>
+
+            </ul>
+        </div>
+        <div class="col-9"  layout:fragment="list_of_table">
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>

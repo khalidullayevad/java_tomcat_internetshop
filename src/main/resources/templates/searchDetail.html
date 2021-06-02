@@ -1,0 +1,71 @@
+<html xmlns:th = "http://www.thymeleaf.org"
+      xmlns:layout = "http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="layout/main.html">
+
+<div layout:fragment="list_of_shops" >
+    <form th:action="@{'/between'}" method="get">
+    <div class="form-row">
+        <div class="form-group col-md-3">
+            <label for="inputEmail4"><span th:text="#{label.nameShopItem}"></span></label>
+            <input type="text" class="form-control" name="name" id="inputEmail4" th:value="${item_name}">
+        </div>
+        <div class="form-group col-md-2">
+            <label for="inputPassword4"><span th:text="#{label.from}"></span></label>
+            <input type="number" class="form-control" id="inputPassword4" name="from">
+        </div>
+        <div class="form-group col-md-2">
+            <label for="inputPassword4"><span th:text="#{label.to}"></span></label>
+            <input type="number" class="form-control" id="inputPassword" name="to">
+        </div>
+        <div class="form-group col-md-2">
+            <label for="inputPassword4">Brand</label>
+            <select class="form-control" id="brands" name="brand_id">
+                <option th:each ="br: ${brands}" th:text="${br.name}" th:value="${br.id}" th:selected="${brand_id==br.id}"></option>
+            </select>
+        </div>
+        <div class="form-group col-md-2 pt-4 mt-2">
+            <label for="inputPassword4"></label>
+            <button type="submit" class="btn btn-primary"><span th:text="#{search.button}"></span></button>
+        </div>
+    </div>
+
+</form>
+
+    <div class="row mb-4 " style="margin-left: 500px;" >
+        <div class="col-sm-5">
+        <form th:action="@{'/ASC'}" method="get">
+            <input type="hidden" name="name" th:value="${item_name}">
+       <button class="btn btn-info" ><span th:text="#{button.asc}"></span></button>
+        </form>
+        </div>
+        <div class="col-sm-5">
+        <form th:action="@{'/DESC'}" method="get">
+            <input type="hidden"  name="name" th:value="${item_name}">
+            <button class="btn btn-info" ><span th:text="#{button.desc}"></span></button>
+        </form>
+        </div>
+
+    </div>
+
+<h4> <span th:text="#{label.search.results}"></span></h4>
+
+    <div class="row  mt-4 pt-4">
+        <div class="col-4 mt-4" th:each="sh:${shops}">
+            <div class="card mr-4" style="width: 14rem;">
+                <img th:src="${sh.smallPicURL}" class="card-img-top" alt="..." style="max-height: 150px;">
+                <div class="card-body">
+                    <a th:href="@{'/details/'+ ${sh.id}}" ><h5 class="card-title" th:text="${sh.name}"></h5></a>
+                    <h6 th:text="${sh.price}"></h6>
+                    <p class="card-text" th:text="${sh.description}"></p>
+                    <div class="card-footer">
+                        <div class="row mr-auto align-self-center">
+                            <i th:each="star : ${#numbers.sequence(0, sh.getStars()-1)}"  class="fa fa-star"style="color: yellow"></i>
+                            <i th:each="star : ${#numbers.sequence(0, 5 - sh.getStars() - 1)}" class="fa fa-star"style="color: darkgray"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</html>
